@@ -1,0 +1,42 @@
+╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║              LATENCYMON RESULTS — win32PrioritySeparation Comparison  |  Ranked WORST → BEST  |  All times in µs  |  Lower = Better ║
+╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+┌──────┬──────────┬─────────────────┬────────────────┬──────────────────┬───────────────┬──────────────┬────────────┬──────────────────┬──────────────────────┬────────────┬────────────┐
+│ Rank │  win32   │  Highest Int→   │  Avg Int→      │  Highest Int→    │  Avg Int→     │  Highest ISR │  Total ISR │  Highest DPC     │  Driver w/ Highest   │  Total DPC │   Hard     │
+│      │ Priority │  Process (µs)   │  Process (µs)  │  DPC (µs)        │  DPC (µs)     │  Time (µs)   │  Time (%)  │  Time (µs)       │  DPC Time            │  Time (%)  │ Pagefaults │
+├──────┼──────────┼─────────────────┼────────────────┼──────────────────┼───────────────┼──────────────┼────────────┼──────────────────┼──────────────────────┼────────────┼────────────┤
+│  1   │    38    │  ████  385.40   │    3.155       │  ████  382.80    │     1.079     │    11.722    │  0.000618  │     238.679      │  dxgkrnl.sys         │  0.403215  │      2     │
+│  2   │    42    │  ███   285.20   │    3.200       │  ███   283.40    │     1.092     │    10.562    │  0.000448  │  ✦  194.194      │  dxgkrnl.sys         │ ✦ 0.392969 │      8     │
+│  3   │    80    │  ██    205.40   │    3.240       │  ██    203.50    │     1.091     │    10.155    │  0.000613  │     203.074      │  dxgkrnl.sys         │  0.399789  │      1     │
+│  4   │    36    │  ██    193.90   │ ✦  3.203       │  ██    192.00    │     1.089     │    10.671    │  0.000681  │     238.708      │  nvlddmkm.sys ⚠      │  0.432828  │     98     │
+│  5   │    22    │  ██    193.60   │    3.220       │  █     155.80    │     1.089     │    10.777    │  0.000707  │  ✗  284.521      │  Wdf01000.sys ⚠      │  0.417842  │ ✦   0     │
+│  6   │    41    │  █     177.10   │    3.358       │ ✦       96.80   │  ✦  1.029     │    10.575    │ ✦ 0.000421 │     264.119      │  ntoskrnl.exe ⚠      │  0.410288  │    130     │
+│  7   │     2    │  █     142.30   │    3.417       │        103.80    │     1.038     │  ✗ 12.243    │  0.000615  │     245.839      │  dxgkrnl.sys         │  0.402368  │      2     │
+│  8   │    40    │ ✦      124.00   │    3.365       │ ✦      121.10    │     1.042     │    11.143    │  0.000581  │  ✦  197.523      │  dxgkrnl.sys         │ ✦ 0.398885 │      7     │
+│  9   │    15    │ ✦      123.60   │    3.424       │ ✦      121.40    │  ✦  1.025     │ ✦ 10.105    │  0.000647  │     224.215      │  dxgkrnl.sys         │  0.402823  │      1     │
+└──────┴──────────┴─────────────────┴────────────────┴──────────────────┴───────────────┴──────────────┴────────────┴──────────────────┴──────────────────────┴────────────┴────────────┘
+
+  ✦  = Best value in that column        ✗  = Worst value in that column
+  ⚠  = Unusual driver (not dxgkrnl.sys)   ████ = Visual latency bar (relative scale)
+
+
+══════════════════════════════════════════════════
+  PODIUM
+══════════════════════════════════════════════════
+  🥇  #1 BEST  →  win32 =  15   (123.6 µs peak)
+  🥈  #2        →  win32 =  40   (124.0 µs peak)
+  🥉  #3        →  win32 =  80   (205.4 µs peak)
+  💀  WORST    →  win32 =  38   (385.4 µs peak)
+
+
+══════════════════════════════════════════════════
+  NOTABLE CALLOUTS
+══════════════════════════════════════════════════
+  • 38  had by far the worst peak latency (385 µs) — nearly 3× worse than the best
+  • 42  had the lowest highest-DPC and lowest total DPC% despite a high peak spike
+  • 41  racked up 130 hard pagefaults — worst by a mile, driven by Fortnite loading
+  • 36  was the only run where nvlddmkm.sys (NVIDIA driver) topped the DPC chart
+  • 22  and 41  had unusual drivers (Wdf01000 / ntoskrnl) leading DPC peaks
+  • dxgkrnl.sys (DirectX Graphics Kernel) dominated DPC load in every other run
+  • All 9 runs passed LatencyMon's "suitable for real-time audio" threshold
