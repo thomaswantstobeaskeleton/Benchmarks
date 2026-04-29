@@ -1,0 +1,39 @@
+<Window x:Class="WinOpti.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="WinOpti" Height="760" Width="1200">
+    <Grid Margin="12">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="2*"/></Grid.RowDefinitions>
+        <TextBlock Text="WinOpti - Windows Optimization Utility" FontSize="24" FontWeight="Bold"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,8">
+            <TextBlock Text="CPU:" FontWeight="Bold"/><TextBlock Text="{Binding Snapshot.Cpu}" Margin="4,0,10,0"/>
+            <TextBlock Text="RAM:" FontWeight="Bold"/><TextBlock Text="{Binding Snapshot.Ram}" Margin="4,0,10,0"/>
+            <TextBlock Text="GPU:" FontWeight="Bold"/><TextBlock Text="{Binding Snapshot.Gpu}" Margin="4,0,10,0"/>
+            <TextBlock Text="Health:" FontWeight="Bold"/><TextBlock Text="{Binding Snapshot.HealthScore}" Margin="4,0,10,0"/>
+        </StackPanel>
+        <DataGrid Grid.Row="2" ItemsSource="{Binding Tweaks}" SelectedItem="{Binding SelectedTweak}" AutoGenerateColumns="False" Margin="0,10,0,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*"/>
+                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*"/>
+                <DataGridTextColumn Header="Risk" Binding="{Binding RiskLevel}" Width="*"/>
+                <DataGridTextColumn Header="Requires Admin" Binding="{Binding RequiresAdmin}" Width="*"/>
+                <DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="*"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="3*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Content="Dry Run" IsChecked="{Binding DryRun}" Margin="0,0,12,0"/>
+                <ComboBox Width="220" ItemsSource="{Binding Presets}" SelectedItem="{Binding SelectedPreset}" Margin="0,0,12,0"/>
+                <Button Content="Apply Preset" Command="{Binding ApplyPresetCommand}" Margin="0,0,12,0"/>
+                <Button Content="Apply Selected" Command="{Binding ApplySelectedCommand}" Margin="0,0,12,0"/>
+                <Button Content="Undo All" Command="{Binding UndoAllCommand}"/>
+            </StackPanel>
+            <ListBox Grid.Row="1" ItemsSource="{Binding Output}" Margin="0,10,0,0"/>
+        </Grid>
+    </Grid>
+</Window>
